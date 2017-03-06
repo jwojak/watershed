@@ -50,7 +50,7 @@ void vincent_soille_watershed::populate_array_from_graph()
   
 }
 
-std::vector< std::pair<size_t, size_t> > vincent_soille_watershed::get_neighbors_list(const cppimage &input_image,std::pair<size_t, size_t> input_pixel, int neighborhood_size )
+std::vector< pixel_type > vincent_soille_watershed::get_neighbors_list(const cppimage &input_image, pixel_type input_pixel, int neighborhood_size )
 {
   std::vector< pixel_type > neighbors_list;
   size_t nb_row = input_image.get_nbrow();
@@ -154,7 +154,7 @@ void vincent_soille_watershed::process_watershed_algo(const cppimage &input_im)
 	{
 	  
 	  std::cout<< "(" << (*map_it).second.first <<", "<< (*map_it).second.second << ") ; " ;
-	  lab_w.set_kl_value((*map_it).second.first, (*map_it).second.second, mask_tag);
+	  lab_w.set_kl_value((*map_it).second.first, (*map_it).second.second, mask_tag); // lab[p] = mask (ligne 18)
 	  std::vector< pixel_type > neighbors_list = this->get_neighbors_list(input_im,  (*map_it).second, 4);
 	  for(std::vector< pixel_type >::iterator it=neighbors_list.begin(); it != neighbors_list.end(); ++it)
 	    {
@@ -172,7 +172,7 @@ void vincent_soille_watershed::process_watershed_algo(const cppimage &input_im)
 
      while(true)
        {
-	 pixel_type current_pixel = this->fifo.front(); // p dans l'algo (ligne27
+	 pixel_type current_pixel = this->fifo.front(); // p dans l'algo (ligne27)
 	 this->fifo.pop();
 	 if( current_pixel.first == fictitious.first &&  current_pixel.second == fictitious.second)  
 	   {
@@ -193,7 +193,7 @@ void vincent_soille_watershed::process_watershed_algo(const cppimage &input_im)
 	 for(std::vector< pixel_type >::iterator it=cur_neighbors_list.begin(); it != cur_neighbors_list.end(); ++it)
 	   {
 	     pixel_type current_neighbor = *it;// q ligne 36 dans l'algo
-	     if( dist.get_kl_value( current_neighbor) < curdist  && ( lab_w.get_kl_value( current_neighbor) > 0 || lab_w.get_kl_value( current_neighbor ) == wshed_tag ) )
+	     if( (dist.get_kl_value( current_neighbor) < curdist )  && ( lab_w.get_kl_value( current_neighbor) > 0 || lab_w.get_kl_value( current_neighbor ) == wshed_tag ) )
 	       {
 		 if( lab_w.get_kl_value( current_neighbor) > 0)  // ligne 39
 		   {
