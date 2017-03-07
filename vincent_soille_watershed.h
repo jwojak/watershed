@@ -40,8 +40,9 @@ class vincent_soille_watershed
    /*!
     * \brief process the algo
     * \param input_im: a const ref to the input image 
+    * \param connectivity; neighborhood coonectivity, default value is 4
     */
-  void process_watershed_algo(const cppimage &input_im);
+  void process_watershed_algo(const cppimage &input_im, int connectivity = 4);
   
   /*
    * \brief export the resulting whsed labelled tab to matlab

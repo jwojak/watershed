@@ -189,7 +189,7 @@ void vincent_soille_watershed::get_labelled_array(double *lab_out_for_matlab) co
 }
 
 
-void vincent_soille_watershed::process_watershed_algo(const cppimage &input_im)
+void vincent_soille_watershed::process_watershed_algo(const cppimage &input_im, int connectivity)
 {  //  vincent soille watershed algo
 
   int init_tag = -1;
@@ -239,7 +239,7 @@ void vincent_soille_watershed::process_watershed_algo(const cppimage &input_im)
 
 	  std::cout<< "(" << (*map_it).second.first <<", "<< (*map_it).second.second << ") ; " ;
 	  lab_w.set_kl_value((*map_it).second.first, (*map_it).second.second, mask_tag); // lab[p] = mask (ligne 18)
-	  std::vector< pixel_type > neighbors_list = this->get_neighbors_list(input_im,  (*map_it).second, 4);
+	  std::vector< pixel_type > neighbors_list = this->get_neighbors_list(input_im,  (*map_it).second, connectivity);
 	  for(std::vector< pixel_type >::iterator it=neighbors_list.begin(); it != neighbors_list.end(); ++it)
 	    {
 	      pixel_type current_neighbor = *it; // q dans l'algo
@@ -273,7 +273,7 @@ void vincent_soille_watershed::process_watershed_algo(const cppimage &input_im)
 	       }
 	   } // endif (ligne 35 algo)
 
-	 std::vector< pixel_type > cur_neighbors_list = this->get_neighbors_list(input_im,  current_pixel, 4);
+	 std::vector< pixel_type > cur_neighbors_list = this->get_neighbors_list(input_im,  current_pixel, connectivity);
 
 	 for(std::vector< pixel_type >::iterator it=cur_neighbors_list.begin(); it != cur_neighbors_list.end(); ++it)
 	   {
@@ -319,7 +319,7 @@ void vincent_soille_watershed::process_watershed_algo(const cppimage &input_im)
 	       {
 		 pixel_type removed_pix = this->fifo.front();
 		 this->fifo.pop();
-		 std::vector< pixel_type > cur_neighbors_list = this->get_neighbors_list(input_im, removed_pix, 4);
+		 std::vector< pixel_type > cur_neighbors_list = this->get_neighbors_list(input_im, removed_pix, connectivity);
 		 for(std::vector< pixel_type >::iterator it=cur_neighbors_list.begin(); it != cur_neighbors_list.end(); ++it)
 		   {
 		     pixel_type current_neighbor = *it; // r ligne 61

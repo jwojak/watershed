@@ -48,6 +48,8 @@ int main(void)
   mon_image.display_image_tab();
   //  mon_image.process_watershed_algo();
   vsw.process_watershed_algo(mon_image);
+  vsw.process_watershed_algo(mon_image,4);
+  vsw.process_watershed_algo(mon_image,8);
 
   return 0;
 }
