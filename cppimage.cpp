@@ -10,6 +10,19 @@ cppimage::cppimage(size_t nbrow, size_t nbcol, int init_val): nb_row(nbrow), nb_
   this->image_array.resize(this->get_nbelt(),init_val);
 }
 
+cppimage::cppimage(size_t nbrow, size_t nbcol,  double *init_array):nb_row(nbrow), nb_col(nbcol)
+{
+  this->set_nbelt();
+  this->image_array.resize(this->get_nbelt(), 0);
+  size_t cpt=0;
+  size_t cpt2 = 0;
+  for(std::vector<int>::iterator it=this->image_array.begin(); it!=this->image_array.end(); ++it)
+    {
+      
+      *it = static_cast <int>(init_array[cpt] );
+      cpt++;
+    }
+}
 
 cppimage::~cppimage()
 {
@@ -72,6 +85,18 @@ void cppimage::set_kl_value(size_t idx_row, size_t idx_col, int value)
 void cppimage::set_kl_value(pixel_type pixel, int value)
 {
   this->set_kl_value(pixel.first, pixel.second, value);
+}
+
+int cppimage::get_im_min() const
+{
+  std::vector<int>::const_iterator hmin = std::min_element(this->image_array.begin(), this->image_array.end());
+return *hmin;
+}
+
+int cppimage::get_im_max() const
+{
+    std::vector<int>::const_iterator hmax = std::max_element(this->image_array.begin(), this->image_array.end());
+return *hmax;
 }
 
 void cppimage::display_image_tab() const

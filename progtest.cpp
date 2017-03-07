@@ -25,25 +25,25 @@ int main(void)
 	}
       cpt--;
       }*/
-  mon_image.set_kl_value(0,0,7);
-  mon_image.set_kl_value(0,1,6);
-  mon_image.set_kl_value(0,2,5);
-  mon_image.set_kl_value(0,3,4);
+  mon_image.set_kl_value(0,0,1);
+  mon_image.set_kl_value(0,1,2);
+  mon_image.set_kl_value(0,2,3);
+  mon_image.set_kl_value(0,3,1);
 
-  mon_image.set_kl_value(1,0,8);
-  mon_image.set_kl_value(1,1,5);
+  mon_image.set_kl_value(1,0,1);
+  mon_image.set_kl_value(1,1,2);
   mon_image.set_kl_value(1,2,4);
-  mon_image.set_kl_value(1,3,3);
+  mon_image.set_kl_value(1,3,2);
 
-  mon_image.set_kl_value(2,0,9);
-  mon_image.set_kl_value(2,1,4);
-  mon_image.set_kl_value(2,2,3);
-  mon_image.set_kl_value(2,3,2);
+  mon_image.set_kl_value(2,0,1);
+  mon_image.set_kl_value(2,1,3);
+  mon_image.set_kl_value(2,2,5);
+  mon_image.set_kl_value(2,3,3);
 
-  mon_image.set_kl_value(3,0,0);
-  mon_image.set_kl_value(3,1,3);
-  mon_image.set_kl_value(3,2,2);
-  mon_image.set_kl_value(3,3,1);
+  mon_image.set_kl_value(3,0,2);
+  mon_image.set_kl_value(3,1,6);
+  mon_image.set_kl_value(3,2,1);
+  mon_image.set_kl_value(3,3,2);
 
   mon_image.display_image_tab();
   //  mon_image.process_watershed_algo();

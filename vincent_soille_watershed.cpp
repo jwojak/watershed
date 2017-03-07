@@ -59,12 +59,14 @@ std::vector< pixel_type > vincent_soille_watershed::get_neighbors_list(const cpp
   size_t idx_col = input_pixel.second;
   size_t new_idx_row = 0, new_idx_col=0;
   
+  //neighbors_list.push_back( pixel_type(input_pixel.first,input_pixel.second)) ;
+
   if(neighborhood_size == 4)
     {
       //left 
       new_idx_col = idx_col - 1;
       new_idx_row =  idx_row;
-      if(new_idx_col >= 0)
+      if(idx_col > 0)
 	{
 	  neighbors_list.push_back(pixel_type (new_idx_row, new_idx_col));
 	}
@@ -85,7 +87,7 @@ std::vector< pixel_type > vincent_soille_watershed::get_neighbors_list(const cpp
       //bottom
       new_idx_row =  idx_row - 1;
       new_idx_col = idx_col;
-      if(new_idx_row  >= 0)
+      if( idx_row  > 0)
 	{
 	  neighbors_list.push_back(pixel_type (new_idx_row, new_idx_col));
 	}
@@ -93,7 +95,70 @@ std::vector< pixel_type > vincent_soille_watershed::get_neighbors_list(const cpp
     }
   else if(neighborhood_size == 8)
     {
-      std::cout<<" 8 NEIGHBORHOOD NOT IMPLEMENTED YET" << std::endl;
+     
+      //left 
+      new_idx_col = idx_col - 1;
+      new_idx_row =  idx_row;
+      if( idx_col > 0)
+	{
+	  neighbors_list.push_back(pixel_type (new_idx_row, new_idx_col));
+	}
+      //right
+      new_idx_col = idx_col + 1;
+      new_idx_row =  idx_row;
+      if(new_idx_col < nb_col)
+	{
+	  neighbors_list.push_back(pixel_type (new_idx_row, new_idx_col));
+	}
+      //top
+      new_idx_row =  idx_row - 1;
+      new_idx_col = idx_col;
+      if( idx_row > 0)
+	{
+	  neighbors_list.push_back(pixel_type (new_idx_row, new_idx_col));
+	}
+      //bottom
+      new_idx_row =  idx_row + 1;
+      new_idx_col = idx_col;
+      if(new_idx_row  < nb_row)
+	{
+	  neighbors_list.push_back(pixel_type (new_idx_row, new_idx_col));
+	}
+
+      // top left
+      new_idx_col = idx_col - 1;
+      new_idx_row =  idx_row - 1;
+      if(new_idx_col >= 0 && idx_row > 0)
+	{
+	  neighbors_list.push_back(pixel_type (new_idx_row, new_idx_col));
+	}
+
+
+      // top right
+      new_idx_col = idx_col + 1;
+      new_idx_row =  idx_row - 1;
+      if(new_idx_col < nb_col && idx_row > 0)
+	{
+	  neighbors_list.push_back(pixel_type (new_idx_row, new_idx_col));
+	}
+
+
+      // bottom left
+      new_idx_col = idx_col - 1;
+      new_idx_row =  idx_row + 1;
+      if( idx_col > 0 && new_idx_row < nb_row)
+	{
+	  neighbors_list.push_back(pixel_type (new_idx_row, new_idx_col));
+	}
+      
+      // bottom right
+      new_idx_col = idx_col + 1;
+      new_idx_row =  idx_row + 1;
+      if(new_idx_col < nb_col && new_idx_row < nb_row)
+	{
+	  neighbors_list.push_back(pixel_type (new_idx_row, new_idx_col));
+	}
+
     }
   else
     {
@@ -104,6 +169,26 @@ std::vector< pixel_type > vincent_soille_watershed::get_neighbors_list(const cpp
   return neighbors_list; // vecteur de max 8 elt on s'autorise la copie
 }
 
+void vincent_soille_watershed::get_labelled_array(double *lab_out_for_matlab)
+{
+  const std::vector<int> &lab_array = lab_w.get_image_array();
+  
+  size_t cpt = 0;
+
+  std::vector<int>::const_iterator hmax = std::max_element(lab_array.begin(), lab_array.end());
+  std::vector<int>::const_iterator hmin = std::min_element(lab_array.begin(), lab_array.end());
+  
+  for(std::vector<int>::const_iterator it=lab_array.begin(); it!=lab_array.end(); ++it)
+    {
+      //std::cout<<"copie pour "<< cpt;
+      lab_out_for_matlab[cpt] = static_cast<double>(*it);
+      //std::cout<<" valide "<<std::endl; 
+      cpt++;
+    }
+
+  
+
+}
 
 
 void vincent_soille_watershed::process_watershed_algo(const cppimage &input_im)
@@ -112,12 +197,12 @@ void vincent_soille_watershed::process_watershed_algo(const cppimage &input_im)
   int init_tag = -1;
   int mask_tag = -2;
   int wshed_tag = 0;  
-  pixel_type fictitious (-1,-1); 
+  pixel_type fictitious = pixel_type(-1,-1); 
 
   int curlab  = 0;
   assert( this->fifo.empty()); // ligne 9 algo
 
-  cppimage lab_w = cppimage(input_im.get_nbrow(), input_im.get_nbcol(), init_tag); //ligne 10 to 12
+  lab_w = cppimage(input_im.get_nbrow(), input_im.get_nbcol(), init_tag); //ligne 10 to 12
   cppimage dist = cppimage(input_im.get_nbrow(), input_im.get_nbcol(), 0);  // algo
  
 
@@ -149,7 +234,8 @@ void vincent_soille_watershed::process_watershed_algo(const cppimage &input_im)
       
       std::cout<<" ----- start_flooding -----"  << std::endl;
       std::cout<<"|- processing level "<< level << std::endl;
-   
+
+
      for( graph_type::iterator map_it = pixels_at_level_it.first; map_it !=  pixels_at_level_it.second; ++map_it)
 	{
 	  
@@ -190,6 +276,7 @@ void vincent_soille_watershed::process_watershed_algo(const cppimage &input_im)
 	   } // endif (ligne 35 algo)
 
 	 std::vector< pixel_type > cur_neighbors_list = this->get_neighbors_list(input_im,  current_pixel, 4);
+	 
 	 for(std::vector< pixel_type >::iterator it=cur_neighbors_list.begin(); it != cur_neighbors_list.end(); ++it)
 	   {
 	     pixel_type current_neighbor = *it;// q ligne 36 dans l'algo
@@ -255,7 +342,26 @@ void vincent_soille_watershed::process_watershed_algo(const cppimage &input_im)
      std::cout<< std::endl << "|-  level "<< level << " complete" <<  std::endl;
     } // end loop on level
 
-   dist.display_image_tab();
+  //loop to mark all watershed point
+  for ( graph_type::iterator it = this->image_graph.begin(); it!= this->image_graph.end(); ++it)
+    {
+      pixel_type current_pixel = (*it).second;
+      std::vector< pixel_type > neighbors_list = get_neighbors_list(input_im, current_pixel, 4 );
+      int current_label = lab_w.get_kl_value(current_pixel);
+      for (std::vector<pixel_type>::iterator nit=neighbors_list.begin(); nit!=neighbors_list.end(); ++nit)
+	{
+	  pixel_type  current_neighbor = *nit;
+	  
+	  if(lab_w.get_kl_value(current_neighbor) != wshed_tag && lab_w.get_kl_value(current_neighbor)<current_label)     
+	    {
+	      lab_w.set_kl_value(current_pixel, wshed_tag);
+	      break;
+	    }
+	}
+      
+    }
+
+   lab_w.display_image_tab();
 } // end function
   
  

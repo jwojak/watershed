@@ -4,6 +4,7 @@
 #include <vector>
 #include <iostream>
 #include <assert.h>
+#include <algorithm>
 #include <map>
 
 typedef std::pair< size_t, size_t > pixel_type;
@@ -11,11 +12,13 @@ typedef std::pair< size_t, size_t > pixel_type;
 class cppimage
 {
  public:
-  // constructeurs
+  // constructors
   cppimage();
   cppimage(size_t nbrow, size_t nbcol, int init_val);
+  // special constructor for matlab mex interface
+  cppimage(size_t nbrow, size_t nbcol,  double *init_array);
 
-  // destructeur;
+  // destructor;
   ~cppimage();
 
   size_t get_nbrow() const;
@@ -29,6 +32,9 @@ class cppimage
 
   void set_kl_value(size_t idx_row, size_t idx_col, int value);
   void set_kl_value(pixel_type pixel, int value);
+
+  int get_im_min() const;
+  int get_im_max() const;
 
   void init_empty_image();
   void display_image_tab() const;

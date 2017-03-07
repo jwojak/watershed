@@ -14,8 +14,11 @@ class vincent_soille_watershed
   ~vincent_soille_watershed();
 
   void process_watershed_algo(const cppimage &input_im);
- 
+  // for matlab output
+  void get_labelled_array(double *lab_out_for_matlab);
+
  private:
+  cppimage lab_w;
   graph_type image_graph;
   std::queue< pixel_type > fifo;
   void populate_graph_from_array( const cppimage &input_image, graph_type &output_graph );
