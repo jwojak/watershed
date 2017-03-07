@@ -1,3 +1,9 @@
+/*!
+ * \file cppimage.cpp
+ * \brief implementation of the class detailled in the .h file
+ * \author jwojak
+ */
+
 #include "cppimage.h"
 
 cppimage::cppimage(): nb_row(0), nb_col(0)
@@ -14,11 +20,11 @@ cppimage::cppimage(size_t nbrow, size_t nbcol,  double *init_array):nb_row(nbrow
 {
   this->set_nbelt();
   this->image_array.resize(this->get_nbelt(), 0);
-  size_t cpt=0;
+  size_t cpt = 0;
   size_t cpt2 = 0;
   for(std::vector<int>::iterator it=this->image_array.begin(); it!=this->image_array.end(); ++it)
     {
-      
+
       *it = static_cast <int>(init_array[cpt] );
       cpt++;
     }
@@ -29,8 +35,8 @@ cppimage::~cppimage()
 }
 
 void cppimage::set_nbelt()
-{ 
-  this->nb_elt = this->nb_row * this->nb_col; 
+{
+  this->nb_elt = this->nb_row * this->nb_col;
 }
 
 void cppimage::set_nbrow(size_t nbrow)
@@ -46,7 +52,7 @@ void cppimage::set_nbcol(size_t nbcol)
 }
 
 
-void cppimage::init_empty_image() 
+void cppimage::init_empty_image()
 {
   this->image_array.resize(this->nb_elt,0);
 }
@@ -116,4 +122,4 @@ const std::vector<int> & cppimage::get_image_array() const
   return this->image_array;
 }
 
- 
+
