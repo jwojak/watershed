@@ -40,7 +40,7 @@ void vincent_soille_watershed::display_graph(const std::multimap< int, std::pair
 
   for (it=i_graph.begin(); it != i_graph.end(); ++it)
     {
-      std::cout << (*it).first << " => (" << (*it).second.first<< "," << (*it).second.second  << ") \n";
+      //std::cout << (*it).first << " => (" << (*it).second.first<< "," << (*it).second.second  << ") \n";
     }
 }
 
@@ -207,7 +207,7 @@ void vincent_soille_watershed::process_watershed_algo(const cppimage &input_im, 
   const std::vector< int > &image_array = input_im.get_image_array();
 
   this->populate_graph_from_array(input_im, this->image_graph); // ligne 13 algo
-  this->display_graph(this->image_graph);
+  //this->display_graph(this->image_graph);
 
 
   std::vector<int>::const_iterator hmax = std::max_element(image_array.begin(), image_array.end());
@@ -230,14 +230,14 @@ void vincent_soille_watershed::process_watershed_algo(const cppimage &input_im, 
       std::pair< graph_type::iterator , graph_type::iterator >  pixels_at_level_it;
       pixels_at_level_it = this->image_graph.equal_range(level);
 
-      std::cout<<" ----- start_flooding -----"  << std::endl;
-      std::cout<<"|- processing level "<< level << std::endl;
+      //std::cout<<" ----- start_flooding -----"  << std::endl;
+      //std::cout<<"|- processing level "<< level << std::endl;
 
 
      for( graph_type::iterator map_it = pixels_at_level_it.first; map_it !=  pixels_at_level_it.second; ++map_it)
 	{
 
-	  std::cout<< "(" << (*map_it).second.first <<", "<< (*map_it).second.second << ") ; " ;
+	  //std::cout<< "(" << (*map_it).second.first <<", "<< (*map_it).second.second << ") ; " ;
 	  lab_w.set_kl_value((*map_it).second.first, (*map_it).second.second, mask_tag); // lab[p] = mask (ligne 18)
 	  std::vector< pixel_type > neighbors_list = this->get_neighbors_list(input_im,  (*map_it).second, connectivity);
 	  for(std::vector< pixel_type >::iterator it=neighbors_list.begin(); it != neighbors_list.end(); ++it)
@@ -335,9 +335,9 @@ void vincent_soille_watershed::process_watershed_algo(const cppimage &input_im, 
        } // endfor (ligne 68 algo)
 
 
-     std::cout<< std::endl;
-     lab_w.display_image_tab();
-     std::cout<< std::endl << "|-  level "<< level << " complete" <<  std::endl;
+     //std::cout<< std::endl;
+     //lab_w.display_image_tab();
+     //std::cout<< std::endl << "|-  level "<< level << " complete" <<  std::endl;
     } // end loop on level
 
   //loop to mark all watershed point
@@ -359,7 +359,7 @@ void vincent_soille_watershed::process_watershed_algo(const cppimage &input_im, 
 
     }
 
-   lab_w.display_image_tab();
+  //lab_w.display_image_tab();
 } // end function
 
 

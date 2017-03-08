@@ -2,7 +2,7 @@
 #define ___VINCENT_SOILLE_WATERSHED___
 
 /*!
-  \file vincent_soille_watershed.h
+  *\file vincent_soille_watershed.h
   * \brief an implementation of the vincent&soille algorithm proposed in
   * "Watersheds in Digital Spaces: An Efficient Algorithm Based on Immersion Simulations"
   *  (IEEE PAMI 1991)
