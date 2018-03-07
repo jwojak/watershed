@@ -1,2 +1,2 @@
 # watershed
-watershed in c++ with matlab wrapp
+Watershed in c++ with matlab wrapp
